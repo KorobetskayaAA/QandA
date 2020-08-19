@@ -3,9 +3,11 @@ import React from 'react';
 import { css, jsx } from '@emotion/core';
 import { PrimaryButton } from './Styles';
 import { QuestionList } from './QuestionList';
-import { getUnansweredQuestions } from './QuestionsData';
+import { getUnansweredQuestions, QuestionData } from './QuestionsData';
 import { Page } from './Page';
 import { PageTitle } from './PageTitle';
+
+/*const renderQuestion = (question: QuestionData) => <div>{question.title}</div>;*/
 
 export const HomePage = () => (
   <Page>
@@ -36,7 +38,10 @@ export const HomePage = () => (
         </h2>
         <PrimaryButton>Ask a question</PrimaryButton>
       </div>
-      <QuestionList data={getUnansweredQuestions()} />
+      <QuestionList
+        data={getUnansweredQuestions()}
+        /*renderItem={renderQuestion}*/
+      />
     </div>
   </Page>
 );
