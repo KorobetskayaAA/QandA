@@ -20,6 +20,9 @@ export const HomePage = () => {
     };
     doGetUnansweredQuestions();
   }, []);
+  const handleAskQuestionClick = () => {
+    console.log('TODO - move to the Ask page');
+  };
   return (
     <Page>
       <div
@@ -37,7 +40,9 @@ export const HomePage = () => {
           `}
         >
           <PageTitle>Unanswered Questions</PageTitle>
-          <PrimaryButton>Ask a question</PrimaryButton>
+          <PrimaryButton onClick={handleAskQuestionClick}>
+            Ask a question
+          </PrimaryButton>
         </div>
       </div>
       {questionsLoading ? (
