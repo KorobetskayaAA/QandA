@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
 import { gray3, gray6 } from './Styles';
 import { QuestionData, getQuestion } from './QuestionsData';
+import { AnswerList } from './AnswerList';
 
 interface RouteParams {
   questionId: string;
@@ -67,6 +68,7 @@ export const QuestionPage: FC<RouteComponentProps<RouteParams>> = ({
               ${question.created.toLocaleTimeString()}
               `}
             </div>
+            <AnswerList data={question.answers} />
           </Fragment>
         )}
       </div>
