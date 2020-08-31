@@ -5,7 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SQLScripts\01-create-tables.sql" />
+    <None Remove="SQLScripts\02-stored-proc.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SQLScripts\01-create-tables.sql" />
+    <EmbeddedResource Include="SQLScripts\02-stored-proc.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="dbup" Version="4.4.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
   </ItemGroup>
 
