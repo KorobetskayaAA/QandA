@@ -42,7 +42,7 @@ namespace QandA.Data
                 if (question != null)
                 {
                     question.Answers = connection.Query<AnswerGetResponse>(
-                        @"EXEX dbo.Answer_Get_ByQuestionId @QuestionId = @QuestionId",
+                        @"EXEC dbo.Answer_Get_ByQuestionId @QuestionId = @QuestionId",
                         new { QuestionId = questionId }
                     );
                 }
@@ -84,7 +84,7 @@ namespace QandA.Data
             }
         }
 
-        public AnswerGetResponse PostAnswer(AnswerPostRequest answer)
+        public AnswerGetResponse PostAnswer(AnswerPostFullRequest answer)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -100,7 +100,7 @@ namespace QandA.Data
             }
         }
 
-        public QuestionGetSingleResponse PostQuestion(QuestionPostRequest question)
+        public QuestionGetSingleResponse PostQuestion(QuestionPostFullRequest question)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
