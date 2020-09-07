@@ -120,3 +120,30 @@ export const postAnswer = async (
   question.answers.push(answerInQuestion);
   return answerInQuestion;
 };
+
+export interface QuestionDataFromServer {
+  questionId: number;
+  title: string;
+  content: string;
+  userName: string;
+  created: string;
+  answers: AnswerDataFromServer[];
+}
+
+export interface AnswerDataFromServer {
+  answerId: number;
+  content: string;
+  userName: string;
+  created: string;
+}
+
+export const mapQuestionFromServer = (
+  question: QuestionDataFromServer,
+): QuestionData => ({
+  ...question,
+  created: new Date(question.created.substr(0, 19)),
+  answers: question.answers.map((answer) => ({
+    ...answer,
+    created: new Date(answer.created.substr(0, 19)),
+  })),
+});
