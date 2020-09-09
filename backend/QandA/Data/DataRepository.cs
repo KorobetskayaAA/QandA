@@ -38,7 +38,7 @@ namespace QandA.Data
                 await connection.OpenAsync();
                 using (GridReader results = await connection.QueryMultipleAsync(
                     @"EXEC dbo.Question_GetSingle @QuestionId = @QuestionId;
-                      EXEC dbo.Answer_GetByQuestionId @QuestionId = @QuestionId",
+                      EXEC dbo.Answer_Get_ByQuestionId @QuestionId = @QuestionId",
                     new { QuestionId = questionId })
                 ) 
                 {
