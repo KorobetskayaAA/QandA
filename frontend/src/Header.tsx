@@ -5,6 +5,23 @@ import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
+const buttonStyle = css`
+  border: none;
+  font-family: ${fontFamily};
+  font-size: ${fontSize};
+  padding: 5px 10px;
+  background-color: transparent;
+  color: ${gray2};
+  text-decoration: none;
+  cursor: pointer;
+  span {
+    margin-left: 10px;
+  }
+  :focus {
+    outline-color: ${gray5};
+  }
+`;
+
 export const Header: FC<RouteComponentProps> = ({ history, location }) => {
   const searchParams = new URLSearchParams(location.search);
   const criteria = searchParams.get('criteria') || '';
@@ -72,27 +89,19 @@ export const Header: FC<RouteComponentProps> = ({ history, location }) => {
         />
       </form>
 
-      <Link
-        to="/signin"
-        css={css`
-          font-family: ${fontFamily};
-          font-size: ${fontSize};
-          padding: 5px 10px;
-          background-color: transparent;
-          color: ${gray2};
-          text-decoration: none;
-          cursor: pointer;
-          span {
-            margin-left: 10px;
-          }
-          :focus {
-            outline-color: ${gray5};
-          }
-        `}
-      >
-        <UserIcon />
-        <span>Sign In</span>
-      </Link>
+      <div>
+        <Link
+          to={{ pathname: '/signout', state: { local: true } }}
+          css={buttonStyle}
+        >
+          <UserIcon />
+          <span>Sign Out</span>
+        </Link>
+        <Link to="/signin" css={buttonStyle}>
+          <UserIcon />
+          <span>Sign In</span>
+        </Link>
+      </div>
     </div>
   );
 };
