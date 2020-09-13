@@ -1,23 +1,39 @@
 import { webAPIUrl } from './AppSettings';
-import { rejects } from 'assert';
 
 export interface HttpRequest<REQB> {
   path: string;
+  method?: string;
+  body?: REQB;
+  accessToken?: string;
 }
 export interface HttpResponse<RESB> extends Response {
   parsedBody?: RESB;
 }
 
 export const http = <REQB, RESB>(
-  config: HttpRequest<RESB>,
+  config: HttpRequest<REQB>,
 ): Promise<HttpResponse<RESB>> => {
   return new Promise((resolve, reject) => {
-    const request = new Request(`${webAPIUrl}${config.path}`);
+    const requestHeaders = new Headers({
+      'Content-Type': 'application/json',
+      'X-My-Custom-Header': 'value-v',
+    });
+    if (config.accessToken) {
+      requestHeaders.set('Authorization', `bearer ${config.accessToken}`);
+    }
     let response: HttpResponse<RESB>;
-    fetch(request)
+    fetch(`${webAPIUrl}${config.path}`, {
+      method: config.method || 'get',
+      headers: requestHeaders,
+      body: config.body ? JSON.stringify(config.body) : undefined,
+    })
       .then((res) => {
         response = res;
-        return res.json();
+        if (res.headers.get('Content-Type') || ''.indexOf('json') > 0) {
+          return res.json();
+        } else {
+          resolve(response);
+        }
       })
       .then((body) => {
         if (response.ok) {
@@ -29,7 +45,7 @@ export const http = <REQB, RESB>(
       })
       .catch((err) => {
         console.error(err);
-        rejects(err);
+        reject(err);
       });
   });
 };

@@ -13,6 +13,7 @@ import { SignOutPage } from './SignOutPage';
 import { QuestionPage } from './QuestionPage';
 import { NotFoundPage } from './NotFoundPage';
 import { AuthProvider } from './Auth';
+import { AuthorizedPage } from './AuthorizedPage';
 
 const AskPage = lazy(() => import('./AskPage'));
 
@@ -48,7 +49,9 @@ function App() {
                     </div>
                   }
                 >
-                  <AskPage />
+                  <AuthorizedPage>
+                    <AskPage />
+                  </AuthorizedPage>
                 </Suspense>
               </Route>
               <Route

@@ -4,6 +4,7 @@ import { UserIcon } from './Icons';
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { useAuth } from './Auth';
 
 const buttonStyle = css`
   border: none;
@@ -36,6 +37,8 @@ export const Header: FC<RouteComponentProps> = ({ history, location }) => {
     e.preventDefault();
     history.push(`/search?criteria=${search}`);
   };
+
+  const { isAuthenticated, user, loading } = useAuth();
 
   return (
     <div
@@ -90,17 +93,24 @@ export const Header: FC<RouteComponentProps> = ({ history, location }) => {
       </form>
 
       <div>
-        <Link
-          to={{ pathname: '/signout', state: { local: true } }}
-          css={buttonStyle}
-        >
-          <UserIcon />
-          <span>Sign Out</span>
-        </Link>
-        <Link to="/signin" css={buttonStyle}>
-          <UserIcon />
-          <span>Sign In</span>
-        </Link>
+        {!loading &&
+          (isAuthenticated ? (
+            <div>
+              <span>{user!.name}</span>
+              <Link
+                to={{ pathname: '/signout', state: { local: true } }}
+                css={buttonStyle}
+              >
+                <UserIcon />
+                <span>Sign Out</span>
+              </Link>
+            </div>
+          ) : (
+            <Link to="/signin" css={buttonStyle}>
+              <UserIcon />
+              <span>Sign In</span>
+            </Link>
+          ))}
       </div>
     </div>
   );
