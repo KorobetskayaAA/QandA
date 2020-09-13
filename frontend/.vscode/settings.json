@@ -5,5 +5,7 @@
     { "language": "typescript", "autoFix": true },
     { "language": "typescriptreact", "autoFix": true }
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "appService.defaultWebAppToDeploy": "/subscriptions/0721ea03-82a6-44e2-94b0-77da89d02154/resourceGroups/QandAResources/providers/Microsoft.Web/sites/ns-qanda",
+  "appService.deploySubpath": "build"
 }
