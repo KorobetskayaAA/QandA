@@ -1,4 +1,5 @@
 import { http } from './http';
+import { getAccessToken } from './Auth';
 
 export interface QuestionData {
   questionId: number;
@@ -118,15 +119,23 @@ export interface PostQuestionData {
 export const postQuestion = async (
   question: PostQuestionData,
 ): Promise<QuestionData | undefined> => {
-  await wait(500);
-  const questionId = Math.max(...questions.map((q) => q.questionId)) + 1;
-  const newQuestion: QuestionData = {
-    ...question,
-    questionId,
-    answers: [],
-  };
-  questions.push(newQuestion);
-  return newQuestion;
+  const accessToken = await getAccessToken();
+  try {
+    const result = await http<PostQuestionData, QuestionDataFromServer>({
+      path: '/questions',
+      method: 'post',
+      body: question,
+      accessToken,
+    });
+    if (result.ok && result.parsedBody) {
+      return mapQuestionFromServer(result.parsedBody);
+    } else {
+      return undefined;
+    }
+  } catch (ex) {
+    console.error(ex);
+    return undefined;
+  }
 };
 
 export interface PostAnswerData {
@@ -139,16 +148,23 @@ export interface PostAnswerData {
 export const postAnswer = async (
   answer: PostAnswerData,
 ): Promise<AnswerData | undefined> => {
-  await wait(500);
-  const question = questions.filter(
-    (q) => q.questionId === answer.questionId,
-  )[0];
-  const answerInQuestion: AnswerData = {
-    answerId: 99,
-    ...answer,
-  };
-  question.answers.push(answerInQuestion);
-  return answerInQuestion;
+  const accessToken = await getAccessToken();
+  try {
+    const result = await http<PostAnswerData, AnswerData>({
+      path: '/questions/answer',
+      method: 'post',
+      body: answer,
+      accessToken,
+    });
+    if (result.ok) {
+      return result.parsedBody;
+    } else {
+      return undefined;
+    }
+  } catch (ex) {
+    console.error(ex);
+    return undefined;
+  }
 };
 
 export interface QuestionDataFromServer {

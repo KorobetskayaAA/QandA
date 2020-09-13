@@ -19,7 +19,7 @@ import {
   HubConnectionState,
   HubConnection,
 } from '@aspnet/signalr';
-import { connect } from 'react-redux';
+import { useAuth } from './Auth';
 
 const connectionUrl = 'http://localhost:5000/questionshub';
 
@@ -104,6 +104,8 @@ export const QuestionPage: FC<RouteComponentProps<RouteParams>> = ({
 
     return { success: result ? true : false };
   };
+
+  const { isAuthenticated } = useAuth();
   return (
     <Page>
       <div
@@ -147,26 +149,28 @@ export const QuestionPage: FC<RouteComponentProps<RouteParams>> = ({
               `}
             </div>
             <AnswerList data={question.answers} />
-            <div
-              css={css`
-                margin-top: 20px;
-              `}
-            >
-              <Form
-                submitCaption="Submit Your Answer"
-                validationRules={{
-                  content: [
-                    { validator: required },
-                    { validator: minLength, arg: 50 },
-                  ],
-                }}
-                onSubmit={handleSubmit}
-                failureMessage="There was a problem with your answer"
-                successMessage="Your answer was successfully submitted"
+            {isAuthenticated && (
+              <div
+                css={css`
+                  margin-top: 20px;
+                `}
               >
-                <Field name="content" label="Your Answer" type="TextArea" />
-              </Form>
-            </div>
+                <Form
+                  submitCaption="Submit Your Answer"
+                  validationRules={{
+                    content: [
+                      { validator: required },
+                      { validator: minLength, arg: 50 },
+                    ],
+                  }}
+                  onSubmit={handleSubmit}
+                  failureMessage="There was a problem with your answer"
+                  successMessage="Your answer was successfully submitted"
+                >
+                  <Field name="content" label="Your Answer" type="TextArea" />
+                </Form>
+              </div>
+            )}
           </Fragment>
         )}
       </div>
